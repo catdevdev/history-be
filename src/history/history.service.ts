@@ -1,13 +1,25 @@
 import { Injectable } from '@nestjs/common';
+import { PgService } from 'src/pg/pg.service';
 import { History } from './dto/history.dto';
 
 @Injectable()
 export class HistoryService {
-  story(id: number): History {
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  constructor(private pgService: PgService) {}
+
+  async story(id: number): Promise<History> {
+    const res = await this.pgService.query(
+      'postgres',
+      'postgres',
+      'select now()',
+    );
+
+    console.log(res.rowCount);
+
     return {
-      id,
+      id: 3,
       title: '123',
-      content: 'sfd',
+      content: '123',
     };
   }
 
