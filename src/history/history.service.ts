@@ -8,13 +8,15 @@ export class HistoryService {
   constructor(private pgService: PgService) {}
 
   async story(id: number): Promise<History> {
-    const res = await this.pgService.query(
+    const res = await this.pgService.query<History>(
       'postgres',
       'postgres',
       'select now()',
     );
 
     console.log(res.rowCount);
+
+    res.rows[0].;
 
     return {
       id: 3,
@@ -23,7 +25,15 @@ export class HistoryService {
     };
   }
 
-  stories(): History[] {
+  async stories(): Promise<History[]> {
+    const res = await this.pgService.query(
+      'postgres',
+      'postgres',
+      'select now()',
+    );
+
+    console.log(res.rows);
+
     return [
       {
         id: 0,
