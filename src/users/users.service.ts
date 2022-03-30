@@ -9,37 +9,21 @@ export class UsersService {
   constructor(private pgService: PgService) {}
 
   async createUser(userInput: UserInput): Promise<User> {
-    const user = await this.pgService.query`
-        
-    `;
-    return createdUser.save();
+    const res = await this.pgService.query<User>(
+      'postgres',
+      'postgres',
+      `select now()`,
+    );
+    return res.rows[0];
   }
 
-  async findAll(): Promise<User[]> {
-    return this.userModel.find().populate('boxes').exec();
-  }
+  async findOneByUsernameOrEmail(usernameOrPassword: string): Promise<User> {
+    const res = await this.pgService.query<User>(
+      'postgres',
+      'postgres',
+      `select now(${usernameOrPassword})`,
+    );
 
-  async findOneByName(username: string, boxId?: string): Promise<User> {
-    const filterMatch = boxId && {
-      match: {
-        _id: {
-          $eq: boxId,
-        },
-      },
-    };
-
-    return this.userModel
-      .findOne({ username })
-      .populate({
-        path: 'boxes',
-        ...filterMatch,
-        populate: {
-          path: 'warehouse',
-          populate: {
-            path: 'warehouseGroup',
-          },
-        },
-      })
-      .exec();
+    return res.rows[0];
   }
 }

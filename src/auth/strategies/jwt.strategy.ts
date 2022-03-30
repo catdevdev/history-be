@@ -19,7 +19,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     username: string;
     sub: string;
   }): Promise<User | null> {
-    const user = await this.usersService.findOneByName(
+    const user = await this.usersService.findOneByUsernameOrEmail(
       validationPayload.username,
     );
     return user;

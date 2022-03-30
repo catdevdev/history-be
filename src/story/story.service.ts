@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { PgService } from 'src/pg/pg.service';
-import { History } from './dto/history.dto';
+import { History } from './dto/story.dto';
 
 @Injectable()
-export class HistoryService {
+export class StoryService {
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   constructor(private pgService: PgService) {}
 
@@ -16,7 +16,7 @@ export class HistoryService {
 
     console.log(res.rowCount);
 
-    res.rows[0].;
+    res.rows[0];
 
     return {
       id: 3,

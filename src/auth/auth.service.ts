@@ -11,8 +11,10 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async validateUser(username: string, pass: string): Promise<any> {
-    const user = await this.usersService.findOneByName(username);
+  async validateUser(usernameOrEmail: string, pass: string): Promise<any> {
+    const user = await this.usersService.findOneByUsernameOrEmail(
+      usernameOrEmail,
+    );
 
     if (user && user.password === pass) {
       const { password, ...result } = user;
@@ -20,6 +22,7 @@ export class AuthService {
     }
     return null;
   }
+
   async login(user: User): Promise<{ access_token: string }> {
     const payload = {
       username: user.username,
@@ -33,9 +36,9 @@ export class AuthService {
     const decoded = this.jwtService.verify(token, {
       secret: '123',
     });
-    const user = this.usersService.findOneByName(decoded.username);
+    const user = this.usersService.findOneByUsernameOrEmail(decoded.username);
 
-    if (!user) throw new Error('fucking shit');
+    if (!user) throw new Error('login error');
 
     return user;
   }
