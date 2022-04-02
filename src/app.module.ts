@@ -1,13 +1,13 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { HistoryModule } from './story/story.module';
 import { PgService } from './pg/pg.service';
 import { PgModule } from './pg/pg.module';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { ApolloServerPluginLandingPageLocalDefault } from 'apollo-server-core';
-import { HistoryService } from './story/story.service';
+import { StoryModule } from './story/story.module';
+import { StoryService } from './story/story.service';
 
 @Module({
   imports: [
@@ -18,10 +18,10 @@ import { HistoryService } from './story/story.service';
       playground: false,
       plugins: [ApolloServerPluginLandingPageLocalDefault()],
     }),
-    HistoryModule,
+    StoryModule,
     PgModule,
   ],
   controllers: [AppController],
-  providers: [AppService, HistoryService, PgService],
+  providers: [AppService, StoryService, PgService],
 })
 export class AppModule {}

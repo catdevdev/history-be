@@ -24,7 +24,12 @@ export interface QueryResult<T> extends QueryResultBase {
 
 @Injectable()
 export class PgService {
-  query = async <T>(username: string, password: string, query: string) => {
+  query = async <T>(
+    username: string,
+    password: string,
+    query: string,
+    values?: any[],
+  ) => {
     const client = new Client({
       host: 'localhost',
       port: 5432,
@@ -33,7 +38,7 @@ export class PgService {
       password,
     });
     await client.connect();
-    const res = await client.query(query);
+    const res = await client.query(query, values);
     await client.end();
 
     return res as QueryResult<T>;

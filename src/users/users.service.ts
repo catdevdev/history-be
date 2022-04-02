@@ -12,7 +12,8 @@ export class UsersService {
     const res = await this.pgService.query<User>(
       'postgres',
       'postgres',
-      `select now()`,
+      `call create_user('$1', '$2', '$3');`,
+      [userInput.email, userInput.username, userInput.password],
     );
     return res.rows[0];
   }

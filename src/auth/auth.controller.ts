@@ -6,7 +6,6 @@ import {
   Request,
   Body,
 } from '@nestjs/common';
-import { UserType } from 'src/users/model/user.model';
 import { UsersService } from 'src/users/users.service';
 import { AuthService } from './auth.service';
 import { LocalAuthGuard } from './guards/local-auth.guard';
