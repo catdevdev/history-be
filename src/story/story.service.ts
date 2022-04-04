@@ -14,8 +14,6 @@ export class StoryService {
       'select now()',
     );
 
-    console.log(res.rowCount);
-
     res.rows[0];
 
     return {
@@ -31,8 +29,6 @@ export class StoryService {
       'postgres',
       'select now()',
     );
-
-    console.log(res.rows);
 
     return [
       {

@@ -1,7 +1,7 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql';
 
 @ObjectType()
-export class User {
+export class w {
   @Field(() => ID)
   id: string;
   @Field()
@@ -10,6 +10,4 @@ export class User {
   email: string;
   @Field()
   password: string;
-  @Field()
-  isBanned: boolean;
 }

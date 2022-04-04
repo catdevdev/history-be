@@ -18,13 +18,10 @@ export class AuthController {
     private usersService: UsersService,
   ) {}
 
-  @UseGuards(LocalAuthGuard)
   @Post('login')
   async login(@Body() body: AuthReq): Promise<{ access_token: string }> {
-    const user = await this.usersService.findOneByUsernameOrEmail(
-      body.usernameOrEmail,
-    );
-    const token = await this.authService.login(user);
+    const token = await this.authService.login(body);
+
     return token;
   }
 
@@ -34,7 +31,10 @@ export class AuthController {
     const foundUser = await this.usersService.findOneByUsernameOrEmail(
       body.username,
     );
-    const token = await this.authService.login(foundUser);
+    const token = await this.authService.login({
+      usernameOrEmail: foundUser.email,
+      password: foundUser.password,
+    });
     return token;
   }
 }

@@ -8,6 +8,8 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { ApolloServerPluginLandingPageLocalDefault } from 'apollo-server-core';
 import { StoryModule } from './story/story.module';
 import { StoryService } from './story/story.service';
+import { UsersModule } from './users/users.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -18,6 +20,8 @@ import { StoryService } from './story/story.service';
       playground: false,
       plugins: [ApolloServerPluginLandingPageLocalDefault()],
     }),
+    UsersModule,
+    AuthModule,
     StoryModule,
     PgModule,
   ],

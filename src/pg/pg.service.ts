@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Client } from 'node-postgres';
+import { Client } from 'pg';
 
 export interface FieldDef {
   name: string;
