@@ -18,6 +18,7 @@ export class AuthController {
     private usersService: UsersService,
   ) {}
 
+  @UseGuards(LocalAuthGuard)
   @Post('login')
   async login(@Body() body: AuthReq): Promise<{ access_token: string }> {
     const token = await this.authService.login(body);
@@ -27,14 +28,8 @@ export class AuthController {
 
   @Post('register')
   async register(@Body() body: RegisterReq): Promise<{ access_token: string }> {
-    await this.usersService.createUser(body);
-    const foundUser = await this.usersService.findOneByUsernameOrEmail(
-      body.username,
-    );
-    const token = await this.authService.login({
-      usernameOrEmail: foundUser.email,
-      password: foundUser.password,
-    });
+    const token = await this.authService.register(body);
+
     return token;
   }
 }

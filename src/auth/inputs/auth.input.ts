@@ -16,13 +16,11 @@ export class RegisterReq {
 @InputType()
 export class AuthReq {
   @IsNotEmpty()
-  usernameOrEmail: string;
+  User_id: number;
+
+  @IsNotEmpty()
+  username: string;
 
   @IsNotEmpty()
   password: string;
 }
-
-// @InputType()
-// export class AuthReq {
-//   body: Body;
-// }

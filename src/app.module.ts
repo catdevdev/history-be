@@ -19,6 +19,7 @@ import { AuthModule } from './auth/auth.module';
       sortSchema: true,
       playground: false,
       plugins: [ApolloServerPluginLandingPageLocalDefault()],
+      context: ({ req }) => ({ headers: req.headers }),
     }),
     UsersModule,
     AuthModule,

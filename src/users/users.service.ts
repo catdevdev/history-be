@@ -1,8 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { PgService, QueryResult } from 'src/pg/pg.service';
+import { User } from './dto/users.dto';
 
 import { UserInput } from './inputs/user.input';
-import { User } from './model/user.model';
+import { UserGqType } from './model/user.model';
 
 @Injectable()
 export class UsersService {
@@ -13,12 +14,7 @@ export class UsersService {
     password: string,
   ): Promise<boolean> {
     try {
-      const res = await this.pgService.query<boolean>(
-        username,
-        password,
-        `select now()`,
-      );
-
+      await this.pgService.query<any>(username, password, `select now()`);
       return true;
     } catch (error) {
       return false;
@@ -33,7 +29,10 @@ export class UsersService {
       [userInput.email, userInput.username, userInput.password],
     );
 
-    return res.rows[0];
+    const userWithPassword = res.rows[0];
+    userWithPassword.password = userInput.password;
+
+    return userWithPassword;
   }
 
   async findOneByUsername(username: string): Promise<User> {
@@ -43,7 +42,18 @@ export class UsersService {
       `select * from get_user_by_username($1);`,
       [username],
     );
-
     return loginResponce.rows[0];
+  }
+
+  async currentUser(username: string, password: string): Promise<User> {
+    const loginResponce = await this.pgService.query<User>(
+      username,
+      password,
+      `select * from loggen_in_user();`,
+    );
+    const user = { ...loginResponce.rows[0] };
+    user.password = password;
+    console.log(loginResponce);
+    return user;
   }
 }

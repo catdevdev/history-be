@@ -1,6 +1,6 @@
 export type User = {
-  User_id: string;
-  email: number;
+  User_id: number;
+  email: string;
   username: string;
   password: string;
   isBanned: boolean;
