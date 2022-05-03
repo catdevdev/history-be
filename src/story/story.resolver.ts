@@ -3,7 +3,7 @@ import { StoryService } from './story.service';
 import { HistoryGlType } from './models/story.model';
 import { History } from './dto/story.dto';
 import { CurrentUser } from 'src/auth/current-user.decorator';
-import { CreateStoryInput } from './input/story.input';
+import { CreateStoryInput, UpdateStoryContent } from './input/story.input';
 import { UseGuards } from '@nestjs/common';
 import { GqlAuthGuard } from 'src/auth/guards/gql-auth.guard';
 import { User } from 'src/users/dto/users.dto';
@@ -24,9 +24,25 @@ export class StoryResolver {
     @Args('input') input: CreateStoryInput,
     @CurrentUser() currentUser: User,
   ): Promise<number> {
-    console.log(input);
     const story_id = await this.storyService.createStory(
       { storyName: input.storyName, storyDescription: input.storyDescription },
+      {
+        username: currentUser.username,
+        password: currentUser.password,
+      },
+    );
+
+    return story_id;
+  }
+
+  @Mutation(() => Number)
+  @UseGuards(GqlAuthGuard)
+  async updateStoryContent(
+    @Args('input') input: UpdateStoryContent,
+    @CurrentUser() currentUser: User,
+  ): Promise<number> {
+    const story_id = await this.storyService.updateStoryContent(
+      { story_id: input.storyId, content: input.storyContent },
       {
         username: currentUser.username,
         password: currentUser.password,

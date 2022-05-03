@@ -7,3 +7,11 @@ export class CreateStoryInput {
   @Field({ nullable: true })
   storyDescription: string;
 }
+
+@InputType()
+export class UpdateStoryContent {
+  @Field()
+  storyId: number;
+  @Field()
+  storyContent: string;
+}

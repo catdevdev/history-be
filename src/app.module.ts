@@ -10,6 +10,8 @@ import { StoryModule } from './story/story.module';
 import { StoryService } from './story/story.service';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
+import { UserPostModule } from './user-post/user-post.module';
+import { UserPostService } from './user-post/user-post.service';
 
 @Module({
   imports: [
@@ -25,8 +27,9 @@ import { AuthModule } from './auth/auth.module';
     AuthModule,
     StoryModule,
     PgModule,
+    UserPostModule,
   ],
   controllers: [AppController],
-  providers: [AppService, StoryService, PgService],
+  providers: [AppService, StoryService, PgService, UserPostService],
 })
 export class AppModule {}

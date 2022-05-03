@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { AuthBody } from 'src/auth/types';
 import { PgService, QueryResult } from 'src/pg/pg.service';
 import { User } from './dto/users.dto';
 
@@ -56,4 +57,21 @@ export class UsersService {
     console.log(loginResponce);
     return user;
   }
+
+  addOrUpdateUserAvatarImage = async (
+    body: {
+      userId: number;
+      imageAvatarUrl: string;
+    },
+    authBody: AuthBody,
+  ) => {
+    const res = await this.pgService.query<{ update_image_cover: number }>(
+      authBody.username,
+      authBody.password,
+      'select * from update_image_cover($1, $2);',
+      [body.userId, body.imageAvatarUrl],
+    );
+
+    return res.rows[0].update_image_cover;
+  };
 }
