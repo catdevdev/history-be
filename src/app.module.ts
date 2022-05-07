@@ -12,6 +12,7 @@ import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { UserPostModule } from './user-post/user-post.module';
 import { UserPostService } from './user-post/user-post.service';
+import { UserPostCommentsService } from './user-post/user-post-comments.service';
 
 @Module({
   imports: [
@@ -30,6 +31,12 @@ import { UserPostService } from './user-post/user-post.service';
     UserPostModule,
   ],
   controllers: [AppController],
-  providers: [AppService, StoryService, PgService, UserPostService],
+  providers: [
+    AppService,
+    StoryService,
+    PgService,
+    UserPostService,
+    UserPostCommentsService,
+  ],
 })
 export class AppModule {}

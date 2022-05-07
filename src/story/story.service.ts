@@ -8,43 +8,6 @@ export class StoryService {
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   constructor(private pgService: PgService) {}
 
-  async story(id: number): Promise<History> {
-    const res = await this.pgService.query<History>(
-      'postgres',
-      'postgres',
-      'select now()',
-    );
-
-    res.rows[0];
-
-    return {
-      id: 3,
-      title: '123',
-      content: '123',
-    };
-  }
-
-  async stories(): Promise<History[]> {
-    const res = await this.pgService.query(
-      'postgres',
-      'postgres',
-      'select now()',
-    );
-
-    return [
-      {
-        id: 0,
-        title: '123',
-        content: 'sfd',
-      },
-      {
-        id: 1,
-        title: '1234',
-        content: 'sfdf',
-      },
-    ];
-  }
-
   async createStory(
     body: {
       storyName: string;
@@ -52,12 +15,13 @@ export class StoryService {
     },
     authBody: AuthBody,
   ): Promise<number> {
-    const res = await this.pgService.query<{ create_story: number }>(
-      authBody.username,
-      authBody.password,
-      'select * from create_story($1, $2);',
-      [body.storyName, body.storyDescription],
-    );
+    const res = await this.pgService.query<{ create_story: number }>({
+      username: authBody.username,
+      password: authBody.password,
+      query: 'select * from create_story($1, $2);',
+      values: [body.storyName, body.storyDescription],
+    });
+
     console.log(res.rows[0].create_story);
     return res.rows[0].create_story;
   }
@@ -69,12 +33,17 @@ export class StoryService {
     },
     authBody: AuthBody,
   ): Promise<number> {
-    const res = await this.pgService.query<{ update_story_content: number }>(
-      authBody.username,
-      authBody.password,
-      'select * from update_story_content($1, $2);',
-      [body.story_id, body.content],
-    );
+    const res = await this.pgService.query<{ update_story_content: number }>({
+      username: authBody.username,
+      password: authBody.password,
+      query: 'select * from update_story_content($1, $2);',
+      values: [body.story_id, body.content],
+    });
+
+    //   username: authBody.username,
+    //   password: authBody.password,
+    //   query: 'select * from update_image_cover($1, $2);',
+    //   values: [body.userId, body.imageAvatarUrl],
     return res.rows[0].update_story_content;
   }
 }

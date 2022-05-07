@@ -12,11 +12,11 @@ import { User } from 'src/users/dto/users.dto';
 export class StoryResolver {
   constructor(private storyService: StoryService) {}
 
-  @Query(() => [HistoryGlType])
-  async stories(): Promise<History[]> {
-    const stories = await this.storyService.stories();
-    return stories;
-  }
+  // @Query(() => [HistoryGlType])
+  // async stories(): Promise<History[]> {
+  //   const stories = await this.storyService.stories();
+  //   return stories;
+  // }
 
   @Mutation(() => Number)
   @UseGuards(GqlAuthGuard)
