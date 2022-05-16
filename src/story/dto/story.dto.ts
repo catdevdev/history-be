@@ -1,5 +1,7 @@
+import { UserPost } from 'src/user-post/dto/user-post.dto';
+
 export type History = {
-  id: number;
-  title: string;
+  User_id: number;
+  Story_id: number;
   content: string;
-};
+} & UserPost;

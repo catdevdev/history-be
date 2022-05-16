@@ -15,6 +15,75 @@ export class UserPostService {
     return res.rows;
   };
 
+  getAllMyUserPosts = async (authBody: AuthBody) => {
+    const res = await this.pgService.query<UserPost>({
+      username: authBody.username,
+      password: authBody.password,
+      query: 'select * from get_all_my_userposts();',
+    });
+
+    return res.rows;
+  };
+
+  moveIntoTrashUserPost = async (
+    body: {
+      userPostId: string;
+    },
+    authBody: AuthBody,
+  ) => {
+    const res = await this.pgService.query<{
+      move_into_trash_user_post: number;
+    }>({
+      username: authBody.username,
+      password: authBody.password,
+      query: 'select * from move_into_trash_user_post($1);',
+      values: [body.userPostId],
+    });
+
+    return res.rows[0].move_into_trash_user_post;
+  };
+
+  likeOrDislikeUserPost = async (
+    body: {
+      userPostId: string;
+      like: boolean;
+    },
+    authBody: AuthBody,
+  ) => {
+    const res = await this.pgService.query<{
+      like_or_dislike_user_post: number;
+    }>({
+      username: authBody.username,
+      password: authBody.password,
+      query: 'select * from like_or_dislike_user_post($1, $2);',
+      values: [body.userPostId, body.like],
+    });
+
+    return res.rows[0].like_or_dislike_user_post;
+  };
+
+  getLikeOrDislikeUserPost = async (
+    body: {
+      userPostId: string;
+    },
+    authBody: AuthBody,
+  ) => {
+    const res = await this.pgService.query<
+      {
+        isLike: boolean;
+        User_id: number;
+        UserPost_id: number;
+      }[]
+    >({
+      username: authBody.username,
+      password: authBody.password,
+      query: 'select * from get_like_or_dislike_user_post($1);',
+      values: [body.userPostId],
+    });
+
+    return res.rows;
+  };
+
   addImageIntoUserPost = async (
     body: {
       userPostId: number;
@@ -30,43 +99,5 @@ export class UserPostService {
     });
 
     return res.rows[0].update_image_cover;
-  };
-
-  addCategoryToUserPost = async (
-    body: {
-      userPostId: number;
-      categoryId: number;
-    },
-    authBody: AuthBody,
-  ) => {
-    const res = await this.pgService.query<{
-      add_category_to_userpost: number;
-    }>({
-      username: authBody.username,
-      password: authBody.password,
-      query: 'select * from add_category_to_userpost($1, $2)',
-      values: [body.userPostId, body.categoryId],
-    });
-
-    return res.rows[0];
-  };
-
-  addGenreToUserPost = async (
-    body: {
-      userPostId: number;
-      genreId: number;
-    },
-    authBody: AuthBody,
-  ) => {
-    const res = await this.pgService.query<{
-      add_genre_to_userpost: number;
-    }>({
-      username: authBody.username,
-      password: authBody.password,
-      query: 'select * from add_genre_to_userpost($1, $2);',
-      values: [body.userPostId, body.genreId],
-    });
-
-    return res.rows[0];
   };
 }

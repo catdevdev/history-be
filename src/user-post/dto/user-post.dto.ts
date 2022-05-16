@@ -6,5 +6,6 @@ export type UserPost = {
   inReview: boolean;
   isBanned: boolean;
   isPublished: boolean;
+  inTrash: boolean;
   imageCover: string;
 };

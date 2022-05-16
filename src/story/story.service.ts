@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { AuthBody } from 'src/auth/types';
 import { PgService } from 'src/pg/pg.service';
+import { UserPost } from 'src/user-post/dto/user-post.dto';
 import { History } from './dto/story.dto';
 
 @Injectable()
@@ -26,6 +27,22 @@ export class StoryService {
     return res.rows[0].create_story;
   }
 
+  async getStoryById(
+    body: {
+      storyId: number;
+    },
+    authBody: AuthBody,
+  ): Promise<History[]> {
+    const res = await this.pgService.query<History>({
+      username: authBody.username,
+      password: authBody.password,
+      query: 'select * from get_story_by_id($1);',
+      values: [body.storyId],
+    });
+
+    return res.rows;
+  }
+
   async updateStoryContent(
     body: {
       story_id: number;
@@ -40,10 +57,6 @@ export class StoryService {
       values: [body.story_id, body.content],
     });
 
-    //   username: authBody.username,
-    //   password: authBody.password,
-    //   query: 'select * from update_image_cover($1, $2);',
-    //   values: [body.userId, body.imageAvatarUrl],
     return res.rows[0].update_story_content;
   }
 }

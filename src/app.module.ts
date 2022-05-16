@@ -18,6 +18,7 @@ import { join } from 'path';
 import { RolesResolver } from './roles/roles.resolver';
 import { RolesModule } from './roles/roles.module';
 import { StatisticsModule } from './statistics/statistics.module';
+import { QuestModule } from './quest/quest.module';
 
 @Module({
   imports: [
@@ -37,6 +38,7 @@ import { StatisticsModule } from './statistics/statistics.module';
     UserPostModule,
     RolesModule,
     StatisticsModule,
+    QuestModule,
   ],
   controllers: [AppController],
   providers: [
