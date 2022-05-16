@@ -13,6 +13,8 @@ import { AuthModule } from './auth/auth.module';
 import { UserPostModule } from './user-post/user-post.module';
 import { UserPostService } from './user-post/user-post.service';
 import { UserPostCommentsService } from './user-post/user-post-comments.service';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 
 @Module({
   imports: [
@@ -24,6 +26,7 @@ import { UserPostCommentsService } from './user-post/user-post-comments.service'
       plugins: [ApolloServerPluginLandingPageLocalDefault()],
       context: ({ req }) => ({ headers: req.headers }),
     }),
+
     UsersModule,
     AuthModule,
     StoryModule,

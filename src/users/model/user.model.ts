@@ -8,4 +8,6 @@ export class UserGqType {
   username: string;
   @Field()
   email: string;
+  @Field({ nullable: true })
+  imageAvatar: string;
 }

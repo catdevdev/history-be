@@ -9,7 +9,23 @@ export const CurrentUser = createParamDecorator(
 
     console.log(ctx.getContext().req.rawHeaders[7]);
 
-    const decoded = jwt_decode(ctx.getContext().req.rawHeaders[7]);
+    // console.log(
+    //   ctx
+    //     .getContext()
+    //     .req.rawHeaders.findOne((raw) => raw.split(' ')[0] === 'Bearer'),
+    // );
+
+    console.log(
+      ctx
+        .getContext()
+        .req.rawHeaders.find((raw) => raw.split(' ')[0] === 'Bearer'),
+    );
+
+    const decoded = jwt_decode(
+      ctx
+        .getContext()
+        .req.rawHeaders.find((raw) => raw.split(' ')[0] === 'Bearer'),
+    );
 
     return decoded;
   },

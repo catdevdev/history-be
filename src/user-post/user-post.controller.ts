@@ -25,6 +25,7 @@ export class UserPostController {
         filename: (req, file, cb) => {
           const fileExtName = extname(file.originalname);
           const id = nanoid(12);
+          console.log(fileExtName);
           cb(null, `${id}${fileExtName}`);
         },
       }),
