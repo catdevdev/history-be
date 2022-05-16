@@ -15,6 +15,9 @@ import { UserPostService } from './user-post/user-post.service';
 import { UserPostCommentsService } from './user-post/user-post-comments.service';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
+import { RolesResolver } from './roles/roles.resolver';
+import { RolesModule } from './roles/roles.module';
+import { StatisticsModule } from './statistics/statistics.module';
 
 @Module({
   imports: [
@@ -32,6 +35,8 @@ import { join } from 'path';
     StoryModule,
     PgModule,
     UserPostModule,
+    RolesModule,
+    StatisticsModule,
   ],
   controllers: [AppController],
   providers: [
@@ -40,6 +45,7 @@ import { join } from 'path';
     PgService,
     UserPostService,
     UserPostCommentsService,
+    RolesResolver,
   ],
 })
 export class AppModule {}
