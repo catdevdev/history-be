@@ -30,20 +30,20 @@ export class UserPostCommentsService {
       content: string;
     },
     authBody: AuthBody,
-  ): Promise<UserPostComment[]> {
-    const res = await this.pgService.query<UserPostComment>({
+  ): Promise<number> {
+    const res = await this.pgService.query<{ add_comment: number }>({
       username: authBody.username,
       password: authBody.password,
       query: 'select * from add_comment($1, $2);',
       values: [body.userPostId, body.content],
     });
 
-    return res.rows;
+    return res.rows[0].add_comment;
   }
 
   async heartComment(
     body: {
-      userPostId: number;
+      commentId: number;
     },
     authBody: AuthBody,
   ): Promise<number> {
@@ -51,7 +51,7 @@ export class UserPostCommentsService {
       username: authBody.username,
       password: authBody.password,
       query: 'select * from heart_comment($1);',
-      values: [body.userPostId],
+      values: [body.commentId],
     });
 
     return res.rows[0].heart_comment;
@@ -59,7 +59,7 @@ export class UserPostCommentsService {
 
   async banComment(
     body: {
-      userPostId: number;
+      commentId: number;
     },
     authBody: AuthBody,
   ): Promise<number> {
@@ -67,7 +67,7 @@ export class UserPostCommentsService {
       username: authBody.username,
       password: authBody.password,
       query: 'select * from ban_comment($1);',
-      values: [body.userPostId],
+      values: [body.commentId],
     });
 
     return res.rows[0].ban_comment;
@@ -75,7 +75,7 @@ export class UserPostCommentsService {
 
   async unBanComment(
     body: {
-      userPostId: number;
+      commentId: number;
     },
     authBody: AuthBody,
   ): Promise<number> {
@@ -83,7 +83,7 @@ export class UserPostCommentsService {
       username: authBody.username,
       password: authBody.password,
       query: 'select * from unban_comment($1);',
-      values: [body.userPostId],
+      values: [body.commentId],
     });
 
     return res.rows[0].unban_comment;

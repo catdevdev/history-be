@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { AuthBody } from 'src/auth/types';
 import { PgService } from 'src/pg/pg.service';
+import { Quest } from './dto/quest.dto';
 
 @Injectable()
 export class QuestService {
@@ -25,7 +26,7 @@ export class QuestService {
 
   async createQuestNode(
     body: {
-      questId: string;
+      questId: number;
       content?: string;
     },
     authBody: AuthBody,
@@ -82,20 +83,29 @@ export class QuestService {
   async getQuestNodeContent(
     body: {
       questNodeId: number;
-      content: string;
     },
     authBody: AuthBody,
-  ): Promise<number> {
+  ): Promise<
+    {
+      Quest_id: number;
+      QuestNode_id: number;
+      isEnd: boolean;
+      content: string;
+    }[]
+  > {
     const res = await this.pgService.query<{
-      get_quest_node_content: number;
+      Quest_id: number;
+      QuestNode_id: number;
+      isEnd: boolean;
+      content: string;
     }>({
       username: authBody.username,
       password: authBody.password,
       query: 'select * from get_quest_node_content($1);',
-      values: [body.content],
+      values: [body.questNodeId],
     });
 
-    return res.rows[0].get_quest_node_content;
+    return res.rows;
   }
 
   async getQuestNodeChoices(

@@ -18,37 +18,4 @@ export class UserPostResolver {
 
     return userPosts;
   }
-
-  @Mutation(() => Number)
-  async addCategoryToUserPost(
-    @Args('input') input: AddCategoryToUserPostInput,
-    @CurrentUser() currentUser: User,
-  ): Promise<number> {
-    console.log(currentUser);
-    const result = await this.userPostService.addCategoryToUserPost(
-      {
-        userPostId: input.userPostId,
-        categoryId: input.categoryId,
-      },
-      { username: currentUser.username, password: currentUser.password },
-    );
-
-    return result.add_category_to_userpost;
-  }
-
-  @Mutation(() => Number)
-  async addGenreToUserPost(
-    @Args('input') input: AddGenreToUserPostInput,
-    @CurrentUser() currentUser: User,
-  ): Promise<number> {
-    const result = await this.userPostService.addGenreToUserPost(
-      {
-        userPostId: input.userPostId,
-        genreId: input.genreId,
-      },
-      { username: currentUser.username, password: currentUser.password },
-    );
-
-    return result.add_genre_to_userpost;
-  }
 }

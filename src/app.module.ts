@@ -19,6 +19,7 @@ import { RolesResolver } from './roles/roles.resolver';
 import { RolesModule } from './roles/roles.module';
 import { StatisticsModule } from './statistics/statistics.module';
 import { QuestModule } from './quest/quest.module';
+import { RolesService } from './roles/roles.service';
 
 @Module({
   imports: [
@@ -47,6 +48,7 @@ import { QuestModule } from './quest/quest.module';
     PgService,
     UserPostService,
     UserPostCommentsService,
+    RolesService,
     RolesResolver,
   ],
 })

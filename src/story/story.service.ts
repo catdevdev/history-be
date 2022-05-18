@@ -23,7 +23,6 @@ export class StoryService {
       values: [body.storyName, body.storyDescription],
     });
 
-    console.log(res.rows[0].create_story);
     return res.rows[0].create_story;
   }
 
@@ -32,7 +31,7 @@ export class StoryService {
       storyId: number;
     },
     authBody: AuthBody,
-  ): Promise<History[]> {
+  ): Promise<History> {
     const res = await this.pgService.query<History>({
       username: authBody.username,
       password: authBody.password,
@@ -40,7 +39,7 @@ export class StoryService {
       values: [body.storyId],
     });
 
-    return res.rows;
+    return res.rows[0];
   }
 
   async updateStoryContent(

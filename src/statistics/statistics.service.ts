@@ -14,14 +14,16 @@ export class StatisticsService {
     },
     authBody: AuthBody,
   ): Promise<number> {
-    const res = await this.pgService.query<number>({
+    const res = await this.pgService.query<{
+      write_statistic_about_logging_user: number;
+    }>({
       username: authBody.username,
       password: authBody.password,
       query: `select * from write_statistic_about_logging_user($1, $2)`,
       values: [body.ipAddress, body.systemName],
     });
 
-    return res.rows[0];
+    return res.rows[0].write_statistic_about_logging_user;
   }
 
   async get_statistic_about_logging_user(
@@ -29,15 +31,27 @@ export class StatisticsService {
       username: string;
     },
     authBody: AuthBody,
-  ): Promise<number> {
-    const res = await this.pgService.query<number>({
+  ): Promise<
+    {
+      User_id: number;
+      loggedAt: Date;
+      ipAddress: string;
+      systemName: string;
+    }[]
+  > {
+    const res = await this.pgService.query<{
+      User_id: number;
+      loggedAt: Date;
+      ipAddress: string;
+      systemName: string;
+    }>({
       username: authBody.username,
       password: authBody.password,
       query: `select * from get_statistic_about_logging_user_by_user_name($1);`,
       values: [body.username],
     });
 
-    return res.rows[0];
+    return res.rows;
   }
 
   writeUserPostViewStatistic = async (
@@ -45,21 +59,17 @@ export class StatisticsService {
       userPostId: string;
     },
     authBody: AuthBody,
-  ) => {
-    const res = await this.pgService.query<
-      {
-        isLike: boolean;
-        User_id: number;
-        UserPost_id: number;
-      }[]
-    >({
+  ): Promise<number> => {
+    const res = await this.pgService.query<{
+      write_user_post_view_statistic: number;
+    }>({
       username: authBody.username,
       password: authBody.password,
       query: 'select * from write_user_post_view_statistic($1);',
       values: [body.userPostId],
     });
 
-    return res.rows;
+    return res.rows[0].write_user_post_view_statistic;
   };
 
   getNumberOfViewsByUserpost = async (
@@ -67,7 +77,7 @@ export class StatisticsService {
       userPostId: string;
     },
     authBody: AuthBody,
-  ) => {
+  ): Promise<number> => {
     const res = await this.pgService.query<{
       get_number_of_views_by_userpost: number;
     }>({
@@ -77,6 +87,6 @@ export class StatisticsService {
       values: [body.userPostId],
     });
 
-    return res.rows;
+    return res.rows[0].get_number_of_views_by_userpost;
   };
 }

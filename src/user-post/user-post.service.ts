@@ -9,7 +9,7 @@ export class UserPostService {
 
   getAllUserPosts = async () => {
     const res = await this.pgService.query<UserPost>({
-      query: 'select * from get_all_userpost();',
+      query: 'select * from get_all_userposts();',
     });
 
     return res.rows;

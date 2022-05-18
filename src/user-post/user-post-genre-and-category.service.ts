@@ -8,8 +8,8 @@ export class UserPostGenreAndCategoryService {
 
   async add_genre_to_userpost(
     body: {
-      user_post_id: string;
-      genre_id: string;
+      userPostId: number;
+      genreId: number;
     },
     authBody: AuthBody,
   ): Promise<number> {
@@ -17,7 +17,7 @@ export class UserPostGenreAndCategoryService {
       username: authBody.username,
       password: authBody.password,
       query: 'select * from add_genre_to_userpost($1, $2)',
-      values: [body.user_post_id, body.genre_id],
+      values: [body.userPostId, body.genreId],
     });
 
     return res.rows[0].add_genre_to_userpost;
@@ -25,8 +25,8 @@ export class UserPostGenreAndCategoryService {
 
   async add_category_to_userpost(
     body: {
-      user_post_id: string;
-      category_id: string;
+      userPostId: number;
+      categoryId: number;
     },
     authBody: AuthBody,
   ): Promise<number> {
@@ -36,7 +36,7 @@ export class UserPostGenreAndCategoryService {
       username: authBody.username,
       password: authBody.password,
       query: 'select * from add_category_to_userpost($1, $2);',
-      values: [body.user_post_id, body.category_id],
+      values: [body.userPostId, body.categoryId],
     });
 
     return res.rows[0].add_category_to_userpost;

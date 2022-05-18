@@ -6,6 +6,7 @@ import { UserPostResolver } from './user-post.resolver';
 import { UserPostCommentsService } from './user-post-comments.service';
 import { UserPostCommentsResolver } from './user-post-comments.resolver';
 import { UserPostGenreAndCategoryService } from './user-post-genre-and-category.service';
+import { UserPostGenreAndCategoryResolver } from './user-post-genre-and-category.resolver';
 
 @Module({
   providers: [
@@ -14,6 +15,7 @@ import { UserPostGenreAndCategoryService } from './user-post-genre-and-category.
     UserPostCommentsService,
     UserPostCommentsResolver,
     UserPostGenreAndCategoryService,
+    UserPostGenreAndCategoryResolver,
   ],
   controllers: [UserPostController],
   imports: [PgModule],

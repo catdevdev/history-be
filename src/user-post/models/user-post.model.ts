@@ -13,3 +13,21 @@ export class UserPostGlType {
   @Field({ nullable: true })
   imageCover: string;
 }
+
+@ObjectType()
+export class UserPostCommentGlType {
+  @Field()
+  UserPost_id: number;
+  @Field()
+  content: string;
+  @Field()
+  isBanned: boolean;
+  @Field()
+  Comment_id: number;
+  @Field()
+  username: string;
+  @Field()
+  imageAvatar: string;
+  @Field()
+  createdAt: string;
+}
