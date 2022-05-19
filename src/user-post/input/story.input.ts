@@ -56,3 +56,19 @@ export class AddGenreToUserPostInput {
   @Field()
   genreId: number;
 }
+
+//
+
+@InputType()
+export class MoveIntoTrashUserPostInput {
+  @Field()
+  userPostId: number;
+}
+
+@InputType()
+export class LikeOrDislikeUserPostInput {
+  @Field()
+  userPostId: number;
+  @Field()
+  like: boolean;
+}

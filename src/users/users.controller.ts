@@ -36,7 +36,6 @@ export class UsersController {
     @Body() body: { userId: number },
     @CurrentUser() user: User,
   ) {
-    console.log(user);
     this.usersService.addOrUpdateUserAvatarImage(
       { userId: body.userId, imageAvatarUrl: file.filename },
       { username: user.username, password: user.password },

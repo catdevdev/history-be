@@ -21,7 +21,6 @@ export class AuthController {
   @UseGuards(LocalAuthGuard)
   @Post('login')
   async login(@Body() body: AuthReq): Promise<{ access_token: string }> {
-    console.log(body);
     const token = await this.authService.login(body);
 
     return token;

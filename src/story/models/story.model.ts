@@ -13,8 +13,6 @@ export class HistoryGlType {
   @Field()
   title: string;
   @Field()
-  userpostType: string;
-  @Field()
   description: string;
   @Field()
   inReview: boolean;
@@ -24,6 +22,6 @@ export class HistoryGlType {
   isPublished: boolean;
   @Field()
   inTrash: boolean;
-  @Field()
+  @Field({ nullable: true })
   imageCover: string;
 }

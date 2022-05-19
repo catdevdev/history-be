@@ -59,7 +59,6 @@ export class UsersService {
 
     const user = { ...loginResponce.rows[0] };
     user.password = password;
-    console.log(loginResponce);
     return user;
   }
 

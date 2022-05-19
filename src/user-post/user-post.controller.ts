@@ -25,7 +25,7 @@ export class UserPostController {
         filename: (req, file, cb) => {
           const fileExtName = extname(file.originalname);
           const id = nanoid(12);
-          console.log(fileExtName);
+
           cb(null, `${id}${fileExtName}`);
         },
       }),
@@ -36,7 +36,6 @@ export class UserPostController {
     @Body() body: { userPostId: number },
     @CurrentUser() user: User,
   ) {
-    console.log(file);
     this.userPost.addImageIntoUserPost(
       { userPostId: body.userPostId, imageCoverFileName: file.filename },
       { username: user.username, password: user.password },

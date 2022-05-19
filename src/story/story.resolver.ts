@@ -28,15 +28,15 @@ export class StoryResolver {
     @Args('input') input: GetStoryInput,
     @CurrentUser() currentUser: User,
   ): Promise<HistoryGlType> {
-    const story_id = await this.storyService.getStoryById(
+    const story = await this.storyService.getStoryById(
       { storyId: input.storyId },
       {
         username: currentUser.username,
         password: currentUser.password,
       },
     );
-
-    return story_id;
+    console.log(story);
+    return story;
   }
 
   @Mutation(() => Number)

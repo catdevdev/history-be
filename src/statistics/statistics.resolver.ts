@@ -1,4 +1,4 @@
-import { Args, Int, Query, Resolver } from '@nestjs/graphql';
+import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { CurrentUser } from 'src/auth/current-user.decorator';
 
 import { User } from 'src/users/dto/users.dto';
@@ -14,7 +14,7 @@ import { StatisticsService } from './statistics.service';
 export class StatisticsResolver {
   constructor(private statisticsService: StatisticsService) {}
 
-  @Query(() => Int)
+  @Mutation(() => Int)
   async write_statistic_about_logging_user(
     @Args('input') input: WriteStatisticAboutLoggingUserInput,
     @CurrentUser() currentUser: User,

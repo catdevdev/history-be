@@ -31,3 +31,13 @@ export class UserPostCommentGlType {
   @Field()
   createdAt: string;
 }
+
+@ObjectType()
+export class LikeOrDislikeUserPostGlType {
+  @Field()
+  isLike: boolean;
+  @Field()
+  User_id: number;
+  @Field()
+  UserPost_id: number;
+}

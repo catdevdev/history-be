@@ -7,12 +7,16 @@ import { UserPost } from './dto/user-post.dto';
 export class UserPostService {
   constructor(private pgService: PgService) {}
 
-  getAllUserPosts = async () => {
+  getAllUserPosts = async (authBody: AuthBody) => {
     const res = await this.pgService.query<UserPost>({
+      username: authBody.username,
+      password: authBody.password,
       query: 'select * from get_all_userposts();',
     });
 
-    return res.rows;
+    return res.rows.filter(
+      (row) => row.isBanned !== true || row.inTrash !== true,
+    );
   };
 
   getAllMyUserPosts = async (authBody: AuthBody) => {
@@ -27,7 +31,7 @@ export class UserPostService {
 
   moveIntoTrashUserPost = async (
     body: {
-      userPostId: string;
+      userPostId: number;
     },
     authBody: AuthBody,
   ) => {
@@ -45,7 +49,7 @@ export class UserPostService {
 
   likeOrDislikeUserPost = async (
     body: {
-      userPostId: string;
+      userPostId: number;
       like: boolean;
     },
     authBody: AuthBody,
@@ -64,17 +68,15 @@ export class UserPostService {
 
   getLikeOrDislikeUserPost = async (
     body: {
-      userPostId: string;
+      userPostId: number;
     },
     authBody: AuthBody,
   ) => {
-    const res = await this.pgService.query<
-      {
-        isLike: boolean;
-        User_id: number;
-        UserPost_id: number;
-      }[]
-    >({
+    const res = await this.pgService.query<{
+      isLike: boolean;
+      User_id: number;
+      UserPost_id: number;
+    }>({
       username: authBody.username,
       password: authBody.password,
       query: 'select * from get_like_or_dislike_user_post($1);',

@@ -21,7 +21,7 @@ export class UserPostCommentsService {
       values: [body.userPostId],
     });
 
-    return res.rows;
+    return res.rows.filter((row) => row.isBanned !== true);
   }
 
   async addComment(
