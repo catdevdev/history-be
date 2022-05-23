@@ -56,7 +56,7 @@ export class StatisticsService {
 
   writeUserPostViewStatistic = async (
     body: {
-      userPostId: string;
+      userPostId: number;
     },
     authBody: AuthBody,
   ): Promise<number> => {
@@ -74,7 +74,7 @@ export class StatisticsService {
 
   getNumberOfViewsByUserpost = async (
     body: {
-      userPostId: string;
+      userPostId: number;
     },
     authBody: AuthBody,
   ): Promise<number> => {
@@ -83,7 +83,7 @@ export class StatisticsService {
     }>({
       username: authBody.username,
       password: authBody.password,
-      query: 'select * from get_number_of_views_by_userpost(3);',
+      query: 'select * from get_number_of_views_by_userpost($1);',
       values: [body.userPostId],
     });
 

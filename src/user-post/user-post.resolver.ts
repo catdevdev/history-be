@@ -81,7 +81,7 @@ export class UserPostResolver {
     return res;
   }
 
-  @Mutation(() => [LikeOrDislikeUserPostGlType])
+  @Query(() => [LikeOrDislikeUserPostGlType])
   @UseGuards(GqlAuthGuard)
   async getLikeOrDislikeUserPost(
     @Args('input') input: LikeOrDislikeUserPostInput,

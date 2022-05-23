@@ -26,7 +26,9 @@ export class UserPostService {
       query: 'select * from get_all_my_userposts();',
     });
 
-    return res.rows;
+    return res.rows.filter(
+      (row) => row.isBanned !== true || row.inTrash !== true,
+    );
   };
 
   moveIntoTrashUserPost = async (

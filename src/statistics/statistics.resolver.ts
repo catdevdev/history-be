@@ -4,7 +4,9 @@ import { CurrentUser } from 'src/auth/current-user.decorator';
 import { User } from 'src/users/dto/users.dto';
 import { Statistic } from './dto/statistics.dto';
 import {
+  GetNumberOfViewsByUserpostInput,
   GetStatisticAboutLoggingUserInput,
+  WriteNumberOfViewsByUserpostInput,
   WriteStatisticAboutLoggingUserInput,
 } from './input/statistics.input';
 import { StatisticGlType } from './models/statistics.model';
@@ -45,5 +47,37 @@ export class StatisticsResolver {
     );
 
     return statistics;
+  }
+
+  @Query(() => [StatisticGlType])
+  async writeUserPostViewStatistic(
+    @Args('input') input: WriteNumberOfViewsByUserpostInput,
+    @CurrentUser() currentUser: User,
+  ): Promise<number> {
+    const quantity = this.statisticsService.writeUserPostViewStatistic(
+      { userPostId: input.userPostId },
+      {
+        username: currentUser.username,
+        password: currentUser.password,
+      },
+    );
+
+    return quantity;
+  }
+
+  @Query(() => [StatisticGlType])
+  async getNumberOfViewsByUserpost(
+    @Args('input') input: GetNumberOfViewsByUserpostInput,
+    @CurrentUser() currentUser: User,
+  ): Promise<number> {
+    const quantity = this.statisticsService.getNumberOfViewsByUserpost(
+      { userPostId: input.userPostId },
+      {
+        username: currentUser.username,
+        password: currentUser.password,
+      },
+    );
+
+    return quantity;
   }
 }

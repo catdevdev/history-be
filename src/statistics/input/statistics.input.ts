@@ -13,3 +13,15 @@ export class GetStatisticAboutLoggingUserInput {
   @Field()
   username: string;
 }
+
+@InputType()
+export class WriteNumberOfViewsByUserpostInput {
+  @Field()
+  userPostId: number;
+}
+
+@InputType()
+export class GetNumberOfViewsByUserpostInput {
+  @Field()
+  userPostId: number;
+}

@@ -12,6 +12,9 @@ async function bootstrap() {
   app.useStaticAssets(join(__dirname, '..', 'user-avatars-uploads'), {
     prefix: '/user-avatars-uploads/',
   });
+  app.useStaticAssets(join(__dirname, '..', 'user-post-uploads'), {
+    prefix: '/user-post-uploads/',
+  });
   await app.listen(3000);
 }
 bootstrap();
