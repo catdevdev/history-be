@@ -65,8 +65,7 @@ export class StatisticsService {
     }>({
       username: authBody.username,
       password: authBody.password,
-      query: 'select * from write_user_post_view_statistic($1);',
-      values: [body.userPostId],
+      query: `select * from write_user_post_view_statistic(${body.userPostId});`,
     });
 
     return res.rows[0].write_user_post_view_statistic;

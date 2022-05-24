@@ -30,6 +30,8 @@ export class AuthController {
   async register(@Body() body: RegisterReq): Promise<{ access_token: string }> {
     const token = await this.authService.register(body);
 
+    console.log(token);
+
     return token;
   }
 }

@@ -49,13 +49,13 @@ export class StatisticsResolver {
     return statistics;
   }
 
-  @Query(() => [StatisticGlType])
+  @Mutation(() => Int)
   async writeUserPostViewStatistic(
     @Args('input') input: WriteNumberOfViewsByUserpostInput,
     @CurrentUser() currentUser: User,
   ): Promise<number> {
     const quantity = this.statisticsService.writeUserPostViewStatistic(
-      { userPostId: input.userPostId },
+      { userPostId: Number(input.userPostId) },
       {
         username: currentUser.username,
         password: currentUser.password,
@@ -65,7 +65,7 @@ export class StatisticsResolver {
     return quantity;
   }
 
-  @Query(() => [StatisticGlType])
+  @Query(() => Int)
   async getNumberOfViewsByUserpost(
     @Args('input') input: GetNumberOfViewsByUserpostInput,
     @CurrentUser() currentUser: User,

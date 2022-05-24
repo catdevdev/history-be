@@ -6,6 +6,7 @@ import { User } from 'src/users/dto/users.dto';
 import {
   AddCategoryToUserPostInput,
   AddGenreToUserPostInput,
+  GetLikeOrDislikeUserPostInput,
   LikeOrDislikeUserPostInput,
   MoveIntoTrashUserPostInput,
 } from './input/story.input';
@@ -84,7 +85,7 @@ export class UserPostResolver {
   @Query(() => [LikeOrDislikeUserPostGlType])
   @UseGuards(GqlAuthGuard)
   async getLikeOrDislikeUserPost(
-    @Args('input') input: LikeOrDislikeUserPostInput,
+    @Args('input') input: GetLikeOrDislikeUserPostInput,
     @CurrentUser() currentUser: User,
   ): Promise<LikeOrDislikeUserPostGlType[]> {
     const res = await this.userPostService.getLikeOrDislikeUserPost(

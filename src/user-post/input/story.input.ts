@@ -72,3 +72,9 @@ export class LikeOrDislikeUserPostInput {
   @Field()
   like: boolean;
 }
+
+@InputType()
+export class GetLikeOrDislikeUserPostInput {
+  @Field()
+  userPostId: number;
+}

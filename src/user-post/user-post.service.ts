@@ -61,8 +61,7 @@ export class UserPostService {
     }>({
       username: authBody.username,
       password: authBody.password,
-      query: 'select * from like_or_dislike_user_post($1, $2);',
-      values: [body.userPostId, body.like],
+      query: `select * from like_or_dislike_user_post(${body.userPostId}, ${body.like});`,
     });
 
     return res.rows[0].like_or_dislike_user_post;

@@ -56,6 +56,11 @@ export class UsersService {
       password,
       query: `select * from loggen_in_user();`,
     });
+    const rolesOfCurrentUser = await this.pgService.query<User>({
+      // "username",
+      password,
+      query: `select * from get_roles_of_user();`,
+    });
 
     const user = { ...loginResponce.rows[0] };
     user.password = password;
