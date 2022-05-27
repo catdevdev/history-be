@@ -40,14 +40,52 @@ export class UsersService {
     return userWithPassword;
   }
 
-  async findOneByUsername(username: string): Promise<User> {
-    const loginResponce = await this.pgService.query<User>({
+  async findOneByUsername(
+    body: { username: string },
+    authBody: AuthBody,
+  ): Promise<User> {
+    const userRes = await this.pgService.query<User>({
+      username: authBody.username,
+      password: authBody.password,
+      query: `select * from get_user_by_username($1);`,
+      values: [body.username],
+    });
+    const rolesOfUser = await this.pgService.query<{ rolname: string }>({
       username: 'postgres',
       password: 'postgres',
-      query: `select * from get_user_by_username($1);`,
-      values: [username],
+      query: `select * from get_roles_of_user($1);`,
+      values: [body.username],
     });
-    return loginResponce.rows[0];
+    const user = {
+      ...userRes.rows[0],
+      roles: rolesOfUser.rows.map((row) => row.rolname),
+    };
+
+    return user;
+  }
+
+  async findOneByUsernameId(
+    body: { username_id: number },
+    authBody: AuthBody,
+  ): Promise<User> {
+    const userRes = await this.pgService.query<User>({
+      username: authBody.username,
+      password: authBody.password,
+      query: `select * from get_user_by_username_id($1);`,
+      values: [body.username_id],
+    });
+    const rolesOfUser = await this.pgService.query<{ rolname: string }>({
+      username: 'postgres',
+      password: 'postgres',
+      query: `select * from get_roles_of_user($1);`,
+      values: [userRes.rows[0].username],
+    });
+    const user = {
+      ...userRes.rows[0],
+      roles: rolesOfUser.rows.map((row) => row.rolname),
+    };
+
+    return user;
   }
 
   async currentUser(username: string, password: string): Promise<User> {
@@ -56,13 +94,17 @@ export class UsersService {
       password,
       query: `select * from loggen_in_user();`,
     });
-    const rolesOfCurrentUser = await this.pgService.query<User>({
-      // "username",
-      password,
-      query: `select * from get_roles_of_user();`,
+    const rolesOfCurrentUser = await this.pgService.query<{ rolname: string }>({
+      username: 'postgres',
+      password: 'postgres',
+      query: `select * from get_roles_of_user($1);`,
+      values: [username],
     });
 
-    const user = { ...loginResponce.rows[0] };
+    const user = {
+      ...loginResponce.rows[0],
+      roles: rolesOfCurrentUser.rows.map((row) => row.rolname),
+    };
     user.password = password;
     return user;
   }
@@ -74,13 +116,15 @@ export class UsersService {
     },
     authBody: AuthBody,
   ) => {
-    const res = await this.pgService.query<{ update_image_cover: number }>({
+    console.log(body.userId);
+    console.log(body.imageAvatarUrl);
+    const res = await this.pgService.query<{ update_image_avatar: number }>({
       username: authBody.username,
       password: authBody.password,
-      query: 'select * from update_image_cover($1, $2);',
-      values: [body.userId, body.imageAvatarUrl],
+      query: 'select * from update_image_avatar($1);',
+      values: [body.imageAvatarUrl],
     });
 
-    return res.rows[0].update_image_cover;
+    return res.rows[0].update_image_avatar;
   };
 }

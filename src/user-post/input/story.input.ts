@@ -1,4 +1,9 @@
 import { Field, InputType } from '@nestjs/graphql';
+@InputType()
+export class GetUserPostByIdInput {
+  @Field()
+  userPostId: number;
+}
 
 @InputType()
 export class AllCommentsByUserpostIdInput {

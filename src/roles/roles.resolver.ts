@@ -24,11 +24,11 @@ export class RolesResolver {
     });
   }
 
-  @Mutation(() => Int)
+  @Mutation(() => String)
   async giveUserRole(
     @Args('input') input: GiveUserRoleInput,
     @CurrentUser() currentUser: User,
-  ): Promise<RoleGlType[]> {
+  ): Promise<string> {
     const res = await this.rolesService.give_user_role(
       {
         username: input.username,
@@ -40,14 +40,16 @@ export class RolesResolver {
       },
     );
 
-    return res[0];
+    console.log(res);
+
+    return res;
   }
 
-  @Mutation(() => Int)
+  @Mutation(() => String)
   async removeUserRole(
     @Args('input') input: GiveUserRoleInput,
     @CurrentUser() currentUser: User,
-  ): Promise<RoleGlType[]> {
+  ): Promise<string> {
     const res = await this.rolesService.remove_user_role(
       {
         username: input.username,
@@ -59,6 +61,6 @@ export class RolesResolver {
       },
     );
 
-    return res[0];
+    return res;
   }
 }

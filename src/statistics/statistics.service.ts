@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { AuthBody } from 'src/auth/types';
 import { PgService } from 'src/pg/pg.service';
 import { UserInput } from 'src/users/inputs/user.input';
+import { LoggingStatistic, UserPostsStatistic } from './dto/statistics.dto';
 
 @Injectable()
 export class StatisticsService {
@@ -87,5 +88,17 @@ export class StatisticsService {
     });
 
     return res.rows[0].get_number_of_views_by_userpost;
+  };
+
+  getLogUserPostActions = async (
+    authBody: AuthBody,
+  ): Promise<UserPostsStatistic[]> => {
+    const res = await this.pgService.query<UserPostsStatistic>({
+      username: authBody.username,
+      password: authBody.password,
+      query: 'select * from get_log_userpost_actions()',
+    });
+
+    return res.rows;
   };
 }

@@ -26,8 +26,8 @@ export class RolesService {
       roleName: string;
     },
     userInput: AuthBody,
-  ): Promise<number> {
-    const res = await this.pgService.query<{ give_user_role: number }>({
+  ): Promise<string> {
+    const res = await this.pgService.query<{ give_user_role: string }>({
       username: userInput.username,
       password: userInput.password,
       query: `select * from give_user_role($1, $2);`,
@@ -43,8 +43,8 @@ export class RolesService {
       roleName: string;
     },
     userInput: AuthBody,
-  ): Promise<number> {
-    const res = await this.pgService.query<{ remove_user_role: number }>({
+  ): Promise<string> {
+    const res = await this.pgService.query<{ remove_user_role: string }>({
       username: userInput.username,
       password: userInput.password,
       query: `select * from remove_user_role($1, $2);`,

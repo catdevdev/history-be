@@ -19,6 +19,22 @@ export class UserPostService {
     );
   };
 
+  getUserPostById = async (
+    body: {
+      userPostId: number;
+    },
+    authBody: AuthBody,
+  ) => {
+    const res = await this.pgService.query<UserPost>({
+      username: authBody.username,
+      password: authBody.password,
+      query: 'select * from get_userpost_by_id($1)',
+      values: [body.userPostId],
+    });
+
+    return res.rows[0];
+  };
+
   getAllMyUserPosts = async (authBody: AuthBody) => {
     const res = await this.pgService.query<UserPost>({
       username: authBody.username,

@@ -7,6 +7,7 @@ import {
   AddCategoryToUserPostInput,
   AddGenreToUserPostInput,
   GetLikeOrDislikeUserPostInput,
+  GetUserPostByIdInput,
   LikeOrDislikeUserPostInput,
   MoveIntoTrashUserPostInput,
 } from './input/story.input';
@@ -32,6 +33,23 @@ export class UserPostResolver {
     });
 
     return userPosts;
+  }
+
+  @Query(() => UserPostGlType)
+  @UseGuards(GqlAuthGuard)
+  async getUserPostById(
+    @Args('input') input: GetUserPostByIdInput,
+    @CurrentUser() currentUser: User,
+  ): Promise<UserPostGlType> {
+    const userpost = await this.userPostService.getUserPostById(
+      { userPostId: input.userPostId },
+      {
+        username: currentUser.username,
+        password: currentUser.password,
+      },
+    );
+
+    return userpost;
   }
 
   @Query(() => [UserPostGlType])

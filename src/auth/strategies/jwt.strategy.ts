@@ -23,7 +23,8 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     sub: string;
   }): Promise<any | null> {
     const user = await this.usersService.findOneByUsername(
-      validationPayload.username,
+      { username: validationPayload.username },
+      { username: 'postgres', password: 'postgres' },
     );
 
     return {

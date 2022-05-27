@@ -5,4 +5,5 @@ export type User = {
   password: string;
   imageAvatar: string;
   isBanned: boolean;
+  roles: string[];
 };

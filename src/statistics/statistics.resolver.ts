@@ -2,14 +2,17 @@ import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { CurrentUser } from 'src/auth/current-user.decorator';
 
 import { User } from 'src/users/dto/users.dto';
-import { Statistic } from './dto/statistics.dto';
+
 import {
   GetNumberOfViewsByUserpostInput,
   GetStatisticAboutLoggingUserInput,
   WriteNumberOfViewsByUserpostInput,
   WriteStatisticAboutLoggingUserInput,
 } from './input/statistics.input';
-import { StatisticGlType } from './models/statistics.model';
+import {
+  StatisticGlType,
+  UserPostStatisticGlType,
+} from './models/statistics.model';
 import { StatisticsService } from './statistics.service';
 
 @Resolver()
@@ -79,5 +82,17 @@ export class StatisticsResolver {
     );
 
     return quantity;
+  }
+
+  @Query(() => [UserPostStatisticGlType])
+  async getLogUserPostActions(
+    @CurrentUser() currentUser: User,
+  ): Promise<UserPostStatisticGlType[]> {
+    const statistics = this.statisticsService.getLogUserPostActions({
+      username: currentUser.username,
+      password: currentUser.password,
+    });
+
+    return statistics;
   }
 }

@@ -10,4 +10,6 @@ export class UserGqType {
   email: string;
   @Field({ nullable: true })
   imageAvatar: string;
+  @Field(() => [String])
+  roles: string[];
 }

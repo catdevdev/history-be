@@ -9,3 +9,15 @@ export class UserInput {
   @Field()
   password: string;
 }
+
+@InputType()
+export class FindOneByUsernameInput {
+  @Field()
+  username: string;
+}
+
+@InputType()
+export class FindOneByUsernameIdInput {
+  @Field()
+  username_id: number;
+}
