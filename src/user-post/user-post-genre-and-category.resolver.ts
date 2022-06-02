@@ -17,13 +17,13 @@ export class UserPostGenreAndCategoryResolver {
 
   @Mutation(() => Number)
   @UseGuards(GqlAuthGuard)
-  async add_genre_to_userpost(
-    @Args('input') input: GenreInput,
+  async add_category_to_userpost(
+    @Args('input') input: CategoryInput,
     @CurrentUser() currentUser: User,
   ): Promise<number> {
     const res =
-      await this.userPostGenreAndCategoryService.add_genre_to_userpost(
-        { userPostId: input.userPostId, genreId: input.genreId },
+      await this.userPostGenreAndCategoryService.add_category_to_userpost(
+        { userPostId: input.userPostId, categoryId: input.categoryId },
         {
           username: currentUser.username,
           password: currentUser.password,
@@ -35,13 +35,13 @@ export class UserPostGenreAndCategoryResolver {
 
   @Mutation(() => Number)
   @UseGuards(GqlAuthGuard)
-  async add_category_to_userpost(
-    @Args('input') input: CategoryInput,
+  async add_genre_to_userpost(
+    @Args('input') input: GenreInput,
     @CurrentUser() currentUser: User,
   ): Promise<number> {
     const res =
-      await this.userPostGenreAndCategoryService.add_category_to_userpost(
-        { userPostId: input.userPostId, categoryId: input.categoryId },
+      await this.userPostGenreAndCategoryService.add_genre_to_userpost(
+        { userPostId: input.userPostId, genreId: input.genreId },
         {
           username: currentUser.username,
           password: currentUser.password,

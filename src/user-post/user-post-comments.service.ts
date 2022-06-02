@@ -8,22 +8,6 @@ import { UserPost } from './dto/user-post.dto';
 export class UserPostCommentsService {
   constructor(private pgService: PgService) {}
 
-  async allCommentsByUserpostId(
-    body: {
-      userPostId: number;
-    },
-    authBody: AuthBody,
-  ): Promise<UserPostComment[]> {
-    const res = await this.pgService.query<UserPostComment>({
-      username: authBody.username,
-      password: authBody.password,
-      query: 'select * from all_comments_by_userpost($1);',
-      values: [body.userPostId],
-    });
-
-    return res.rows.filter((row) => row.isBanned !== true);
-  }
-
   async addComment(
     body: {
       userPostId: number;
@@ -41,20 +25,20 @@ export class UserPostCommentsService {
     return res.rows[0].add_comment;
   }
 
-  async heartComment(
+  async allCommentsByUserpostId(
     body: {
-      commentId: number;
+      userPostId: number;
     },
     authBody: AuthBody,
-  ): Promise<number> {
-    const res = await this.pgService.query<{ heart_comment: number }>({
+  ): Promise<UserPostComment[]> {
+    const res = await this.pgService.query<UserPostComment>({
       username: authBody.username,
       password: authBody.password,
-      query: 'select * from heart_comment($1);',
-      values: [body.commentId],
+      query: 'select * from all_comments_by_userpost($1);',
+      values: [body.userPostId],
     });
 
-    return res.rows[0].heart_comment;
+    return res.rows.filter((row) => row.isBanned !== true);
   }
 
   async banComment(
@@ -71,6 +55,22 @@ export class UserPostCommentsService {
     });
 
     return res.rows[0].ban_comment;
+  }
+
+  async heartComment(
+    body: {
+      commentId: number;
+    },
+    authBody: AuthBody,
+  ): Promise<number> {
+    const res = await this.pgService.query<{ heart_comment: number }>({
+      username: authBody.username,
+      password: authBody.password,
+      query: 'select * from heart_comment($1);',
+      values: [body.commentId],
+    });
+
+    return res.rows[0].heart_comment;
   }
 
   async unBanComment(

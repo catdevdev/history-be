@@ -16,7 +16,26 @@ import { User } from 'src/users/dto/users.dto';
 export class StoryResolver {
   constructor(private storyService: StoryService) {}
 
-  // @Query(() => [HistoryGlType])
+  
+
+  @Mutation(() => Number)
+  @UseGuards(GqlAuthGuard)
+  async createStory(
+    @Args('input') input: CreateStoryInput,
+    @CurrentUser() currentUser: User,
+  ): Promise<number> {
+    const story_id = await this.storyService.createStory(
+      { storyName: input.storyName, storyDescription: input.storyDescription },
+      {
+        username: currentUser.username,
+        password: currentUser.password,
+      },
+    );
+
+    return story_id;
+  }
+
+// @Query(() => [HistoryGlType])
   // async stories(): Promise<History[]> {
   //   const stories = await this.storyService.stories();
   //   return stories;
@@ -37,23 +56,6 @@ export class StoryResolver {
     );
     console.log(story);
     return story;
-  }
-
-  @Mutation(() => Number)
-  @UseGuards(GqlAuthGuard)
-  async createStory(
-    @Args('input') input: CreateStoryInput,
-    @CurrentUser() currentUser: User,
-  ): Promise<number> {
-    const story_id = await this.storyService.createStory(
-      { storyName: input.storyName, storyDescription: input.storyDescription },
-      {
-        username: currentUser.username,
-        password: currentUser.password,
-      },
-    );
-
-    return story_id;
   }
 
   @Mutation(() => Number)

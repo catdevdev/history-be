@@ -19,23 +19,6 @@ import { StatisticsService } from './statistics.service';
 export class StatisticsResolver {
   constructor(private statisticsService: StatisticsService) {}
 
-  @Mutation(() => Int)
-  async write_statistic_about_logging_user(
-    @Args('input') input: WriteStatisticAboutLoggingUserInput,
-    @CurrentUser() currentUser: User,
-  ): Promise<number> {
-    const statistics =
-      await this.statisticsService.write_statistic_about_logging_user(
-        { ipAddress: input.ipAddress, systemName: input.systemName },
-        {
-          username: currentUser.username,
-          password: currentUser.password,
-        },
-      );
-
-    return statistics;
-  }
-
   @Query(() => [StatisticGlType])
   async get_statistic_about_logging_user(
     @Args('input') input: GetStatisticAboutLoggingUserInput,
@@ -52,20 +35,16 @@ export class StatisticsResolver {
     return statistics;
   }
 
-  @Mutation(() => Int)
-  async writeUserPostViewStatistic(
-    @Args('input') input: WriteNumberOfViewsByUserpostInput,
+  @Query(() => [UserPostStatisticGlType])
+  async getLogUserPostActions(
     @CurrentUser() currentUser: User,
-  ): Promise<number> {
-    const quantity = this.statisticsService.writeUserPostViewStatistic(
-      { userPostId: Number(input.userPostId) },
-      {
-        username: currentUser.username,
-        password: currentUser.password,
-      },
-    );
+  ): Promise<UserPostStatisticGlType[]> {
+    const statistics = this.statisticsService.getLogUserPostActions({
+      username: currentUser.username,
+      password: currentUser.password,
+    });
 
-    return quantity;
+    return statistics;
   }
 
   @Query(() => Int)
@@ -84,15 +63,36 @@ export class StatisticsResolver {
     return quantity;
   }
 
-  @Query(() => [UserPostStatisticGlType])
-  async getLogUserPostActions(
+  @Mutation(() => Int)
+  async write_statistic_about_logging_user(
+    @Args('input') input: WriteStatisticAboutLoggingUserInput,
     @CurrentUser() currentUser: User,
-  ): Promise<UserPostStatisticGlType[]> {
-    const statistics = this.statisticsService.getLogUserPostActions({
-      username: currentUser.username,
-      password: currentUser.password,
-    });
+  ): Promise<number> {
+    const statistics =
+      await this.statisticsService.write_statistic_about_logging_user(
+        { ipAddress: input.ipAddress, systemName: input.systemName },
+        {
+          username: currentUser.username,
+          password: currentUser.password,
+        },
+      );
 
     return statistics;
+  }
+
+  @Mutation(() => Int)
+  async writeUserPostViewStatistic(
+    @Args('input') input: WriteNumberOfViewsByUserpostInput,
+    @CurrentUser() currentUser: User,
+  ): Promise<number> {
+    const quantity = this.statisticsService.writeUserPostViewStatistic(
+      { userPostId: Number(input.userPostId) },
+      {
+        username: currentUser.username,
+        password: currentUser.password,
+      },
+    );
+
+    return quantity;
   }
 }

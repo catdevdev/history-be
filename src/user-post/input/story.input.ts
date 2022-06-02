@@ -14,9 +14,9 @@ export class AllCommentsByUserpostIdInput {
 @InputType()
 export class AddCommentInput {
   @Field()
-  userPostId: number;
-  @Field()
   content: string;
+  @Field()
+  userPostId: number;
 }
 
 @InputType()
@@ -33,33 +33,33 @@ export class UnbanCommentInput {
 @InputType()
 export class GenreInput {
   @Field()
-  userPostId: number;
-  @Field()
   genreId: number;
+  @Field()
+  userPostId: number;
 }
 
 @InputType()
 export class CategoryInput {
   @Field()
-  userPostId: number;
-  @Field()
   categoryId: number;
+  @Field()
+  userPostId: number;
 }
 
 @InputType()
 export class AddCategoryToUserPostInput {
   @Field()
-  userPostId: number;
+   categoryId: number;
   @Field()
-  categoryId: number;
+   userPostId: number;
 }
 
 @InputType()
 export class AddGenreToUserPostInput {
   @Field()
-  userPostId: number;
+   genreId: number;
   @Field()
-  genreId: number;
+   userPostId: number;
 }
 
 //
@@ -73,9 +73,9 @@ export class MoveIntoTrashUserPostInput {
 @InputType()
 export class LikeOrDislikeUserPostInput {
   @Field()
-  userPostId: number;
-  @Field()
   like: boolean;
+  @Field()
+  userPostId: number;
 }
 
 @InputType()

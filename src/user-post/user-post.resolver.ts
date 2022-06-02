@@ -23,37 +23,6 @@ export class UserPostResolver {
 
   @Query(() => [UserPostGlType])
   @UseGuards(GqlAuthGuard)
-  async getAllUserPosts(
-    // @Args('input') input: AllCommentsByUserpostIdInput,
-    @CurrentUser() currentUser: User,
-  ): Promise<UserPostGlType[]> {
-    const userPosts = await this.userPostService.getAllUserPosts({
-      username: currentUser.username,
-      password: currentUser.password,
-    });
-
-    return userPosts;
-  }
-
-  @Query(() => UserPostGlType)
-  @UseGuards(GqlAuthGuard)
-  async getUserPostById(
-    @Args('input') input: GetUserPostByIdInput,
-    @CurrentUser() currentUser: User,
-  ): Promise<UserPostGlType> {
-    const userpost = await this.userPostService.getUserPostById(
-      { userPostId: input.userPostId },
-      {
-        username: currentUser.username,
-        password: currentUser.password,
-      },
-    );
-
-    return userpost;
-  }
-
-  @Query(() => [UserPostGlType])
-  @UseGuards(GqlAuthGuard)
   async getAllMyUserPosts(
     // @Args('input') input: AllCommentsByUserpostIdInput,
     @CurrentUser() currentUser: User,
@@ -66,13 +35,26 @@ export class UserPostResolver {
     return userPosts;
   }
 
-  @Mutation(() => Number)
+  @Query(() => [UserPostGlType])
   @UseGuards(GqlAuthGuard)
-  async moveIntoTrashUserPost(
-    @Args('input') input: MoveIntoTrashUserPostInput,
+  async getAllUserPosts(
     @CurrentUser() currentUser: User,
-  ): Promise<number> {
-    const res = await this.userPostService.moveIntoTrashUserPost(
+  ): Promise<UserPostGlType[]> {
+    const userPosts = await this.userPostService.getAllUserPosts({
+      username: currentUser.username,
+      password: currentUser.password,
+    });
+
+    return userPosts;
+  }
+
+  @Query(() => [LikeOrDislikeUserPostGlType])
+  @UseGuards(GqlAuthGuard)
+  async getLikeOrDislikeUserPost(
+    @Args('input') input: GetLikeOrDislikeUserPostInput,
+    @CurrentUser() currentUser: User,
+  ): Promise<LikeOrDislikeUserPostGlType[]> {
+    const res = await this.userPostService.getLikeOrDislikeUserPost(
       { userPostId: input.userPostId },
       {
         username: currentUser.username,
@@ -81,6 +63,25 @@ export class UserPostResolver {
     );
 
     return res;
+  }
+
+  @Query(() => UserPostGlType)
+  @UseGuards(GqlAuthGuard)
+  async getUserPostById(
+    @Args('input') input: GetUserPostByIdInput,
+    @CurrentUser() currentUser: User,
+  ): Promise<UserPostGlType> {
+    console.log(input);
+
+    const userpost = await this.userPostService.getUserPostById(
+      { userPostId: input.userPostId },
+      {
+        username: currentUser.username,
+        password: currentUser.password,
+      },
+    );
+
+    return userpost;
   }
 
   @Mutation(() => Number)
@@ -100,13 +101,13 @@ export class UserPostResolver {
     return res;
   }
 
-  @Query(() => [LikeOrDislikeUserPostGlType])
+  @Mutation(() => Number)
   @UseGuards(GqlAuthGuard)
-  async getLikeOrDislikeUserPost(
-    @Args('input') input: GetLikeOrDislikeUserPostInput,
+  async moveIntoTrashUserPost(
+    @Args('input') input: MoveIntoTrashUserPostInput,
     @CurrentUser() currentUser: User,
-  ): Promise<LikeOrDislikeUserPostGlType[]> {
-    const res = await this.userPostService.getLikeOrDislikeUserPost(
+  ): Promise<number> {
+    const res = await this.userPostService.moveIntoTrashUserPost(
       { userPostId: input.userPostId },
       {
         username: currentUser.username,

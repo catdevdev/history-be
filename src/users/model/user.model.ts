@@ -2,14 +2,14 @@ import { Field, ID, ObjectType } from '@nestjs/graphql';
 
 @ObjectType()
 export class UserGqType {
-  @Field(() => ID)
-  User_id: number;
   @Field()
-  username: string;
-  @Field()
-  email: string;
+   email: string;
   @Field({ nullable: true })
-  imageAvatar: string;
+   imageAvatar: string;
   @Field(() => [String])
-  roles: string[];
+   roles: string[];
+  @Field(() => ID)
+   User_id: number;
+  @Field()
+   username: string;
 }

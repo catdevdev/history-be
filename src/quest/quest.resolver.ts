@@ -12,6 +12,7 @@ import {
   CreateQuestInput,
   CreateQuestNodeChoiceInput,
   CreateQuestNodeInput,
+  GetFirstQuestNodeInput,
   GetQuestNodeContentInput,
   UpdateQuestNodeContentInput,
 } from './input/quest.input';
@@ -71,30 +72,14 @@ export class QuestResolver {
     return result;
   }
 
-  @Mutation(() => Number)
-  async updateQuestNodeContent(
-    @Args('input') input: UpdateQuestNodeContentInput,
+  @Query(() => QuestGlType)
+  async getFirstQuestNode(
+    @Args('input') input: GetFirstQuestNodeInput,
     @CurrentUser() currentUser: User,
-  ): Promise<number> {
-    const result = await this.questService.updateQuestNodeContent(
+  ): Promise<QuestGlType> {
+    const userPosts = await this.questService.getFirstQuestNode(
       {
-        questNodeId: input.questNodeId,
-        content: input.content,
-      },
-      { username: currentUser.username, password: currentUser.password },
-    );
-
-    return result;
-  }
-
-  @Query(() => [QuestGlType])
-  async getQuestNodeContent(
-    @Args('input') input: GetQuestNodeContentInput,
-    @CurrentUser() currentUser: User,
-  ): Promise<QuestGlType[]> {
-    const userPosts = await this.questService.getQuestNodeContent(
-      {
-        questNodeId: input.questNodeId,
+        questId: input.questId,
       },
       { username: currentUser.username, password: currentUser.password },
     );
@@ -115,5 +100,36 @@ export class QuestResolver {
     );
 
     return userPosts;
+  }
+
+  @Query(() => [QuestGlType])
+  async getQuestNodeContent(
+    @Args('input') input: GetQuestNodeContentInput,
+    @CurrentUser() currentUser: User,
+  ): Promise<QuestGlType[]> {
+    const userPosts = await this.questService.getQuestNodeContent(
+      {
+        questNodeId: input.questNodeId,
+      },
+      { username: currentUser.username, password: currentUser.password },
+    );
+
+    return userPosts;
+  }
+
+  @Mutation(() => Number)
+  async updateQuestNodeContent(
+    @Args('input') input: UpdateQuestNodeContentInput,
+    @CurrentUser() currentUser: User,
+  ): Promise<number> {
+    const result = await this.questService.updateQuestNodeContent(
+      {
+        questNodeId: input.questNodeId,
+        content: input.content,
+      },
+      { username: currentUser.username, password: currentUser.password },
+    );
+
+    return result;
   }
 }

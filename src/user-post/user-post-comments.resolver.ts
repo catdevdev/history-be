@@ -16,6 +16,23 @@ import { UserPostCommentsService } from './user-post-comments.service';
 export class UserPostCommentsResolver {
   constructor(private userPostCommentsService: UserPostCommentsService) {}
 
+  @Mutation(() => Number)
+  @UseGuards(GqlAuthGuard)
+  async addComment(
+    @Args('input') input: AddCommentInput,
+    @CurrentUser() currentUser: User,
+  ): Promise<number> {
+    const comments = await this.userPostCommentsService.addComment(
+      { userPostId: input.userPostId, content: input.content },
+      {
+        username: currentUser.username,
+        password: currentUser.password,
+      },
+    );
+
+    return comments;
+  }
+
   @Query(() => [UserPostCommentGlType])
   @UseGuards(GqlAuthGuard)
   async allCommentsByUserpostId(
@@ -35,28 +52,11 @@ export class UserPostCommentsResolver {
 
   @Mutation(() => Number)
   @UseGuards(GqlAuthGuard)
-  async addComment(
-    @Args('input') input: AddCommentInput,
+  async banComment(
+    @Args('input') input: UnbanCommentInput,
     @CurrentUser() currentUser: User,
   ): Promise<number> {
-    const comments = await this.userPostCommentsService.addComment(
-      { userPostId: input.userPostId, content: input.content },
-      {
-        username: currentUser.username,
-        password: currentUser.password,
-      },
-    );
-
-    return comments;
-  }
-
-  @Mutation(() => Number)
-  @UseGuards(GqlAuthGuard)
-  async heartComment(
-    @Args('input') input: BanCommentInput,
-    @CurrentUser() currentUser: User,
-  ): Promise<number> {
-    const res = await this.userPostCommentsService.heartComment(
+    const res = await this.userPostCommentsService.banComment(
       { commentId: input.commentId },
       {
         username: currentUser.username,
@@ -69,11 +69,11 @@ export class UserPostCommentsResolver {
 
   @Mutation(() => Number)
   @UseGuards(GqlAuthGuard)
-  async banComment(
-    @Args('input') input: UnbanCommentInput,
+  async heartComment(
+    @Args('input') input: BanCommentInput,
     @CurrentUser() currentUser: User,
   ): Promise<number> {
-    const res = await this.userPostCommentsService.banComment(
+    const res = await this.userPostCommentsService.heartComment(
       { commentId: input.commentId },
       {
         username: currentUser.username,

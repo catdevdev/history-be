@@ -61,23 +61,56 @@ export class QuestService {
     return res.rows[0].create_quest_node_choice;
   }
 
-  async updateQuestNodeContent(
+  async getFirstQuestNode(
     body: {
-      questNodeId: number;
-      content: string;
+      questId: number;
     },
     authBody: AuthBody,
-  ): Promise<number> {
+  ): Promise<{
+    Quest_id: number;
+    QuestNode_id: number;
+    isEnd: boolean;
+    content: string;
+  }> {
     const res = await this.pgService.query<{
-      update_quest_node_content: number;
+      Quest_id: number;
+      QuestNode_id: number;
+      isEnd: boolean;
+      content: string;
     }>({
       username: authBody.username,
       password: authBody.password,
-      query: 'select * from update_quest_node_content($1, $2)',
-      values: [body.questNodeId, body.content],
+      query: 'select * from get_first_quest_node($1);',
+      values: [body.questId],
     });
 
-    return res.rows[0].update_quest_node_content;
+    return res.rows[0];
+  }
+
+  async getQuestNodeChoices(
+    body: {
+      questNodeId: number;
+    },
+    authBody: AuthBody,
+  ): Promise<
+    {
+      QuestNode_id: number;
+      content: string;
+      toQuestNode: number;
+    }[]
+  > {
+    const res = await this.pgService.query<{
+      QuestNode_id: number;
+      content: string;
+      toQuestNode: number;
+    }>({
+      username: authBody.username,
+      password: authBody.password,
+      query: 'select * from get_quest_node_choices($1);',
+      values: [body.questNodeId],
+    });
+
+    return res.rows;
   }
 
   async getQuestNodeContent(
@@ -108,29 +141,22 @@ export class QuestService {
     return res.rows;
   }
 
-  async getQuestNodeChoices(
+  async updateQuestNodeContent(
     body: {
       questNodeId: number;
+      content: string;
     },
     authBody: AuthBody,
-  ): Promise<
-    {
-      QuestNode_id: number;
-      content: string;
-      toQuestNode: number;
-    }[]
-  > {
+  ): Promise<number> {
     const res = await this.pgService.query<{
-      QuestNode_id: number;
-      content: string;
-      toQuestNode: number;
+      update_quest_node_content: number;
     }>({
       username: authBody.username,
       password: authBody.password,
-      query: 'select * from get_quest_node_choices($1);',
-      values: [body.questNodeId],
+      query: 'select * from update_quest_node_content($1, $2)',
+      values: [body.questNodeId, body.content],
     });
 
-    return res.rows;
+    return res.rows[0].update_quest_node_content;
   }
 }

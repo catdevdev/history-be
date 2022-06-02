@@ -9,7 +9,7 @@ export class GetRolesOfUserInput {
 @InputType()
 export class GiveUserRoleInput {
   @Field()
-  username: string;
-  @Field()
   roleName: string;
+  @Field()
+  username: string;
 }

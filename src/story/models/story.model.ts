@@ -3,25 +3,25 @@ import { Field, ObjectType } from '@nestjs/graphql';
 @ObjectType()
 export class HistoryGlType {
   @Field()
-  User_id: number;
+   content: string;
   @Field()
-  Story_id: number;
-  @Field()
-  content: string;
-  @Field()
-  UserPost_id: number;
-  @Field()
-  title: string;
-  @Field()
-  description: string;
-  @Field()
-  inReview: boolean;
-  @Field()
-  isBanned: boolean;
-  @Field()
-  isPublished: boolean;
-  @Field()
-  inTrash: boolean;
+   description: string;
   @Field({ nullable: true })
-  imageCover: string;
+   imageCover: string;
+  @Field()
+   inReview: boolean;
+  @Field()
+   inTrash: boolean;
+  @Field()
+   isBanned: boolean;
+  @Field()
+   isPublished: boolean;
+  @Field()
+   Story_id: number;
+  @Field()
+   title: string;
+  @Field()
+   User_id: number;
+  @Field()
+   UserPost_id: number;
 }

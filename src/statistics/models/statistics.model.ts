@@ -3,23 +3,23 @@ import { Field, ObjectType } from '@nestjs/graphql';
 @ObjectType()
 export class StatisticGlType {
   @Field()
-  User_id: number;
+   ipAddress: string;
   @Field()
-  loggedAt: Date;
+   loggedAt: Date;
   @Field()
-  ipAddress: string;
+   systemName: string;
   @Field()
-  systemName: string;
+   User_id: number;
 }
 
 @ObjectType()
 export class UserPostStatisticGlType {
   @Field()
-  User_id: number;
+   action: string;
   @Field()
-  UserPost_id: number;
+   createdAt: Date;
   @Field()
-  action: string;
+   User_id: number;
   @Field()
-  createdAt: Date;
+   UserPost_id: number;
 }

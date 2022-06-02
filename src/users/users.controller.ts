@@ -31,7 +31,7 @@ export class UsersController {
       }),
     }),
   )
-  uploadFile(
+   uploadFile(
     @UploadedFile() file: Express.Multer.File,
     @Body() body: { userId: number },
     @CurrentUser() user: User,

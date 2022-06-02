@@ -5,36 +5,22 @@ import { UserPost } from './dto/user-post.dto';
 
 @Injectable()
 export class UserPostService {
-  constructor(private pgService: PgService) {}
-
-  getAllUserPosts = async (authBody: AuthBody) => {
-    const res = await this.pgService.query<UserPost>({
-      username: authBody.username,
-      password: authBody.password,
-      query: 'select * from get_all_userposts();',
-    });
-
-    return res.rows.filter(
-      (row) => row.isBanned !== true || row.inTrash !== true,
-    );
-  };
-
-  getUserPostById = async (
+  addImageIntoUserPost = async (
     body: {
       userPostId: number;
+      imageCoverFileName: string;
     },
     authBody: AuthBody,
   ) => {
-    const res = await this.pgService.query<UserPost>({
+    const res = await this.pgService.query<{ update_image_cover: number }>({
       username: authBody.username,
       password: authBody.password,
-      query: 'select * from get_userpost_by_id($1)',
-      values: [body.userPostId],
+      query: 'select * from update_image_cover($1, $2);',
+      values: [body.userPostId, body.imageCoverFileName],
     });
 
-    return res.rows[0];
+    return res.rows[0].update_image_cover;
   };
-
   getAllMyUserPosts = async (authBody: AuthBody) => {
     const res = await this.pgService.query<UserPost>({
       username: authBody.username,
@@ -46,43 +32,17 @@ export class UserPostService {
       (row) => row.isBanned !== true || row.inTrash !== true,
     );
   };
-
-  moveIntoTrashUserPost = async (
-    body: {
-      userPostId: number;
-    },
-    authBody: AuthBody,
-  ) => {
-    const res = await this.pgService.query<{
-      move_into_trash_user_post: number;
-    }>({
+  getAllUserPosts = async (authBody: AuthBody) => {
+    const res = await this.pgService.query<UserPost>({
       username: authBody.username,
       password: authBody.password,
-      query: 'select * from move_into_trash_user_post($1);',
-      values: [body.userPostId],
+      query: 'select * from get_all_userposts();',
     });
 
-    return res.rows[0].move_into_trash_user_post;
+    return res.rows.filter(
+      (row) => row.isBanned !== true || row.inTrash !== true,
+    );
   };
-
-  likeOrDislikeUserPost = async (
-    body: {
-      userPostId: number;
-      like: boolean;
-    },
-    authBody: AuthBody,
-  ) => {
-    const res = await this.pgService.query<{
-      like_or_dislike_user_post: number;
-    }>({
-      username: authBody.username,
-      password: authBody.password,
-      query: `select * from like_or_dislike_user_post(${body.userPostId}, ${body.like});`,
-    });
-
-    return res.rows[0].like_or_dislike_user_post;
-  };
-
   getLikeOrDislikeUserPost = async (
     body: {
       userPostId: number;
@@ -102,21 +62,55 @@ export class UserPostService {
 
     return res.rows;
   };
-
-  addImageIntoUserPost = async (
+  getUserPostById = async (
     body: {
       userPostId: number;
-      imageCoverFileName: string;
     },
     authBody: AuthBody,
   ) => {
-    const res = await this.pgService.query<{ update_image_cover: number }>({
+    const res = await this.pgService.query<UserPost>({
       username: authBody.username,
       password: authBody.password,
-      query: 'select * from update_image_cover($1, $2);',
-      values: [body.userPostId, body.imageCoverFileName],
+      query: 'select * from get_userpost_by_id($1)',
+      values: [body.userPostId],
     });
 
-    return res.rows[0].update_image_cover;
+    return res.rows[0];
   };
+  likeOrDislikeUserPost = async (
+    body: {
+      userPostId: number;
+      like: boolean;
+    },
+    authBody: AuthBody,
+  ) => {
+    const res = await this.pgService.query<{
+      like_or_dislike_user_post: number;
+    }>({
+      username: authBody.username,
+      password: authBody.password,
+      query: `select * from like_or_dislike_user_post(${body.userPostId}, ${body.like});`,
+    });
+
+    return res.rows[0].like_or_dislike_user_post;
+  };
+  moveIntoTrashUserPost = async (
+    body: {
+      userPostId: number;
+    },
+    authBody: AuthBody,
+  ) => {
+    const res = await this.pgService.query<{
+      move_into_trash_user_post: number;
+    }>({
+      username: authBody.username,
+      password: authBody.password,
+      query: 'select * from move_into_trash_user_post($1);',
+      values: [body.userPostId],
+    });
+
+    return res.rows[0].move_into_trash_user_post;
+  };
+
+  constructor(private pgService: PgService) {}
 }

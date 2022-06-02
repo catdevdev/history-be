@@ -20,15 +20,6 @@ export class UsersResolver {
 
   @Query(() => UserGqType)
   @UseGuards(GqlAuthGuard)
-  async me(@CurrentUser() currentUser: User) {
-    return this.usersService.currentUser(
-      currentUser.username,
-      currentUser.password,
-    );
-  }
-
-  @Query(() => UserGqType)
-  @UseGuards(GqlAuthGuard)
   async findOneByUsername(
     @Args('input') input: FindOneByUsernameInput,
     @CurrentUser() currentUser: User,
@@ -48,6 +39,15 @@ export class UsersResolver {
     return this.usersService.findOneByUsernameId(
       { username_id: input.username_id },
       { username: currentUser.username, password: currentUser.password },
+    );
+  }
+
+  @Query(() => UserGqType)
+  @UseGuards(GqlAuthGuard)
+  async me(@CurrentUser() currentUser: User) {
+    return this.usersService.currentUser(
+      currentUser.username,
+      currentUser.password,
     );
   }
 }

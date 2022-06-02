@@ -8,16 +8,16 @@ export class GetStoryInput {
 
 @InputType()
 export class CreateStoryInput {
-  @Field()
-  storyName: string;
   @Field({ nullable: true })
   storyDescription: string;
+  @Field()
+  storyName: string;
 }
 
 @InputType()
 export class UpdateStoryContent {
   @Field()
-  storyId: number;
-  @Field()
   storyContent: string;
+  @Field()
+  storyId: number;
 }

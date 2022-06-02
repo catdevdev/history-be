@@ -8,23 +8,26 @@ import { UserGqType } from './model/user.model';
 
 @Injectable()
 export class UsersService {
-  constructor(private pgService: PgService) {}
+  addOrUpdateUserAvatarImage = async (
+    body: {
+      userId: number;
+      imageAvatarUrl: string;
+    },
+    authBody: AuthBody,
+  ) => {
+    console.log(body.userId);
+    console.log(body.imageAvatarUrl);
+    const res = await this.pgService.query<{ update_image_avatar: number }>({
+      username: authBody.username,
+      password: authBody.password,
+      query: 'select * from update_image_avatar($1);',
+      values: [body.imageAvatarUrl],
+    });
 
-  async verifyCredentials(
-    username: string,
-    password: string,
-  ): Promise<boolean> {
-    try {
-      await this.pgService.query<any>({
-        username,
-        password,
-        query: `select now()`,
-      });
-      return true;
-    } catch (error) {
-      return false;
-    }
-  }
+    return res.rows[0].update_image_avatar;
+  };
+
+  constructor(private pgService: PgService) {}
 
   async createUser(userInput: UserInput): Promise<User> {
     const res = await this.pgService.query<User>({
@@ -38,6 +41,27 @@ export class UsersService {
     userWithPassword.password = userInput.password;
 
     return userWithPassword;
+  }
+
+  async currentUser(username: string, password: string): Promise<User> {
+    const loginResponce = await this.pgService.query<User>({
+      username,
+      password,
+      query: `select * from loggen_in_user();`,
+    });
+    const rolesOfCurrentUser = await this.pgService.query<{ rolname: string }>({
+      username: 'postgres',
+      password: 'postgres',
+      query: `select * from get_roles_of_user($1);`,
+      values: [username],
+    });
+
+    const user = {
+      ...loginResponce.rows[0],
+      roles: rolesOfCurrentUser.rows.map((row) => row.rolname),
+    };
+    user.password = password;
+    return user;
   }
 
   async findOneByUsername(
@@ -88,43 +112,19 @@ export class UsersService {
     return user;
   }
 
-  async currentUser(username: string, password: string): Promise<User> {
-    const loginResponce = await this.pgService.query<User>({
-      username,
-      password,
-      query: `select * from loggen_in_user();`,
-    });
-    const rolesOfCurrentUser = await this.pgService.query<{ rolname: string }>({
-      username: 'postgres',
-      password: 'postgres',
-      query: `select * from get_roles_of_user($1);`,
-      values: [username],
-    });
-
-    const user = {
-      ...loginResponce.rows[0],
-      roles: rolesOfCurrentUser.rows.map((row) => row.rolname),
-    };
-    user.password = password;
-    return user;
+  async verifyCredentials(
+    username: string,
+    password: string,
+  ): Promise<boolean> {
+    try {
+      await this.pgService.query<any>({
+        username,
+        password,
+        query: `select now()`,
+      });
+      return true;
+    } catch (error) {
+      return false;
+    }
   }
-
-  addOrUpdateUserAvatarImage = async (
-    body: {
-      userId: number;
-      imageAvatarUrl: string;
-    },
-    authBody: AuthBody,
-  ) => {
-    console.log(body.userId);
-    console.log(body.imageAvatarUrl);
-    const res = await this.pgService.query<{ update_image_avatar: number }>({
-      username: authBody.username,
-      password: authBody.password,
-      query: 'select * from update_image_avatar($1);',
-      values: [body.imageAvatarUrl],
-    });
-
-    return res.rows[0].update_image_avatar;
-  };
 }

@@ -3,21 +3,21 @@ import { Field, ObjectType } from '@nestjs/graphql';
 @ObjectType()
 export class QuestGlType {
   @Field()
-  Quest_id: number;
-  @Field()
-  QuestNode_id: number;
+  content: string;
   @Field()
   isEnd: boolean;
   @Field()
-  content: string;
+  Quest_id: number;
+  @Field()
+  QuestNode_id: number;
 }
 
 @ObjectType()
 export class QuestChoiceGlType {
   @Field()
-  QuestNode_id: number;
+   content: string;
   @Field()
-  content: string;
+   QuestNode_id: number;
   @Field()
-  toQuestNode: number;
+   toQuestNode: number;
 }

@@ -2,34 +2,34 @@ import { Field, ObjectType } from '@nestjs/graphql';
 
 @ObjectType()
 export class UserPostGlType {
-  @Field()
-  UserPost_id: number;
-  @Field()
-  title: string;
-  @Field()
-  userpostType: string;
   @Field({ nullable: true })
   description: string;
   @Field({ nullable: true })
   imageCover: string;
+  @Field()
+  title: string;
+  @Field()
+  UserPost_id: number;
+  @Field()
+  userpostType: string;
 }
 
 @ObjectType()
 export class UserPostCommentGlType {
   @Field()
-  UserPost_id: number;
+  Comment_id: number;
   @Field()
   content: string;
   @Field()
-  isBanned: boolean;
-  @Field()
-  Comment_id: number;
-  @Field()
-  username: string;
+  createdAt: string;
   @Field()
   imageAvatar: string;
   @Field()
-  createdAt: string;
+  isBanned: boolean;
+  @Field()
+  username: string;
+  @Field()
+  UserPost_id: number;
 }
 
 @ObjectType()

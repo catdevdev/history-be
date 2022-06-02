@@ -13,7 +13,7 @@ export class RegisterReq {
   @MaxLength(30)
   @IsNotEmpty()
   @IsLowercase()
-  private email: string;
+  email: string;
   @MinLength(6)
   @MaxLength(30)
   @IsNotEmpty()
